@@ -2,7 +2,8 @@ TEMPLATE        = lib
 CONFIG         += c++17
 DEFINES        += QT_DEPRECATED_WARNINGS
 QT             += widgets network
-DESTDIR         = $$PWD
+TARGET          = xbapplication
+DESTIR          = $$PWD
 
 SUBDIRS += \
     src/

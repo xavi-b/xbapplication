@@ -3,3 +3,5 @@ HEADERS += \
 
 SOURCES += \
     $$PWD/application.cpp
+
+INCLUDEPATH += $$PWD
