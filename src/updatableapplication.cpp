@@ -24,7 +24,9 @@ bool UpdatableApplication::applyUpdate(QByteArray const& data)
         updater.write(data);
         updater.close();
         this->quit();
-        QProcess::startDetached(QFileInfo(updater).filePath(), { QCoreApplication::applicationDirPath() });
+        QStringList args = this->arguments();
+        args[0] = QCoreApplication::applicationFilePath();
+        QProcess::startDetached(QFileInfo(updater).filePath(), args);
         return true;
     }
 
