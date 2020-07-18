@@ -1,7 +1,3 @@
-HEADERS += \
-    $$PWD/application.h
-
 SOURCES += \
-    $$PWD/application.cpp
-
-INCLUDEPATH += $$PWD
+    $$PWD/application.cpp \
+    $$PWD/updatableapplication.cpp

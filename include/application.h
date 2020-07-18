@@ -15,15 +15,17 @@ class Application : public QApplication
 {
     Q_OBJECT
 private:
-    bool uniqueInstance = false;
     int connectionTimeout = 1000;
     QLocalServer localServer;
     QString defaultLocale = "en_US";
     QString currentLocale;
     QTranslator translator;
 
+    void newConnectionHandler();
+
 protected:
     void setCurrentLocale(QString const& s);
+    virtual bool sendToUniqueInstance(QLocalSocket& localSocket);
 
 public:
     Application(QString const& applicationName,
@@ -31,19 +33,17 @@ public:
                 QString const& organizationName,
                 int argc, char *argv[]);
 
-    virtual int startRunning();
+    bool checkUniqueInstance();
     QString getUniqueApplicationName() const;
-    void newConnectionHandler();
-    void readyReadHandler();
-    virtual void run() = 0;
+    virtual void readyReadHandler();
     virtual void processArguments(QStringList const& args) = 0;
 
     virtual QString translationsDir() const;
     bool switchLocale(QString const& locale);
     QStringList getAvailableLocales() const;
 
-    void setUniqueInstance(bool b) { this->uniqueInstance = b; }
     void setConnectionTimeout(int i) { this->connectionTimeout = i; }
+    int getConnectionTimeout() const { return this->connectionTimeout; }
     void setDefaultLocale(QString const& s);
     QString getCurrentLocale();
 

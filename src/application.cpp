@@ -3,6 +3,28 @@
 namespace XB
 {
 
+void Application::newConnectionHandler()
+{
+    QLocalSocket* localSocket = localServer.nextPendingConnection();
+    connect(localSocket, &QLocalSocket::readyRead, this, &Application::readyReadHandler);
+    connect(localSocket, &QLocalSocket::disconnected, localSocket, &QLocalSocket::deleteLater);
+}
+
+void Application::setCurrentLocale(const QString& s)
+{
+    this->currentLocale = s;
+    QLocale::setDefault(this->currentLocale);
+}
+
+bool Application::sendToUniqueInstance(QLocalSocket& localSocket)
+{
+    QByteArray data;
+    QDataStream ds(&data, QIODevice::WriteOnly);
+    ds << this->arguments();
+    localSocket.write(data);
+    return localSocket.waitForBytesWritten(this->connectionTimeout);
+}
+
 Application::Application(QString const& applicationName,
                          QString const& organizationDomain,
                          QString const& organizationName,
@@ -14,30 +36,20 @@ Application::Application(QString const& applicationName,
     this->setOrganizationName(organizationName);
 }
 
-int Application::startRunning()
+bool Application::checkUniqueInstance()
 {
-    if(this->uniqueInstance)
+    QLocalSocket localSocket;
+    localSocket.connectToServer(this->getUniqueApplicationName());
+    if(localSocket.waitForConnected(this->connectionTimeout))
     {
-        QLocalSocket localSocket;
-        localSocket.connectToServer(this->getUniqueApplicationName());
-        if(localSocket.waitForConnected(this->connectionTimeout))
-        {
-            QByteArray data;
-            QDataStream ds(&data, QIODevice::WriteOnly);
-            ds << this->arguments();
-            localSocket.write(data);
-            return localSocket.waitForBytesWritten(this->connectionTimeout) ? 0 : 1;
-        }
-        else
-        {
-            localServer.listen(this->getUniqueApplicationName());
-            connect(&localServer, &QLocalServer::newConnection, this, &Application::newConnectionHandler);
-        }
+        return this->sendToUniqueInstance(localSocket);
     }
-
-    this->run();
-
-    return this->exec();
+    else
+    {
+        localServer.listen(this->getUniqueApplicationName());
+        connect(&localServer, &QLocalServer::newConnection, this, &Application::newConnectionHandler);
+        return true;
+    }
 }
 
 QString Application::getUniqueApplicationName() const
@@ -46,13 +58,6 @@ QString Application::getUniqueApplicationName() const
             .arg(this->applicationName())
             .arg(this->organizationDomain())
             .arg(this->organizationName());
-}
-
-void Application::newConnectionHandler()
-{
-    QLocalSocket* localSocket = localServer.nextPendingConnection();
-    connect(localSocket, &QLocalSocket::readyRead, this, &Application::readyReadHandler);
-    connect(localSocket, &QLocalSocket::disconnected, localSocket, &QLocalSocket::deleteLater);
 }
 
 void Application::readyReadHandler()
@@ -112,12 +117,6 @@ void Application::setDefaultLocale(const QString& s)
     this->defaultLocale = s;
     if(this->currentLocale.isEmpty())
         this->setCurrentLocale(this->defaultLocale);
-}
-
-void Application::setCurrentLocale(const QString& s)
-{
-    this->currentLocale = s;
-    QLocale::setDefault(this->currentLocale);
 }
 
 QString Application::getCurrentLocale()
