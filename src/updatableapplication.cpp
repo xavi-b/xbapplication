@@ -11,10 +11,10 @@ void UpdatableApplication::updateDownloadedHandler(QNetworkReply* reply)
 
 void UpdatableApplication::update(QUrl const& updateUrl)
 {
-    connect(&downloadManager, &QNetworkAccessManager::finished, this, &UpdatableApplication::updateDownloadedHandler);
+    connect(&this->downloadManager, &QNetworkAccessManager::finished, this, &UpdatableApplication::updateDownloadedHandler);
     QNetworkRequest request(updateUrl);
     request.setTransferTimeout(this->transferTimeout);
-    downloadManager.get(request);
+    this->downloadManager.get(request);
 }
 
 bool UpdatableApplication::applyUpdate(QByteArray const& data)
