@@ -13,6 +13,7 @@ void UpdatableApplication::update(QUrl const& updateUrl)
 {
     connect(&downloadManager, &QNetworkAccessManager::finished, this, &UpdatableApplication::updateDownloadedHandler);
     QNetworkRequest request(updateUrl);
+    request.setTransferTimeout(this->transferTimeout);
     downloadManager.get(request);
 }
 

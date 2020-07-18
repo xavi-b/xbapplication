@@ -21,6 +21,7 @@ private:
     bool checkForUpdates = true;
     QUrl updateUrl;
     QNetworkAccessManager downloadManager;
+    int transferTimeout = 30000;
 
     void updateDownloadedHandler(QNetworkReply* reply);
 
@@ -38,6 +39,8 @@ public:
     bool doCheckForUpdates();
     void setCheckForUpdates(bool b) { this->checkForUpdates = b; }
     void setUpdateUrl(QUrl const& url) { this->updateUrl = url; }
+    void setTransferTimeout(int i) { this->transferTimeout = i; }
+    int getTransferTimeout() const { return this->transferTimeout; }
 
 signals:
     void updateDownloaded(QByteArray const& data);
