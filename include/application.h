@@ -26,6 +26,7 @@ private:
 protected:
     void setCurrentLocale(QString const& s);
     virtual bool sendToUniqueInstance(QLocalSocket& localSocket);
+    virtual void readyReadHandler();
 
 public:
     Application(QString const& applicationName,
@@ -35,7 +36,6 @@ public:
 
     bool checkUniqueInstance();
     QString getUniqueApplicationName() const;
-    virtual void readyReadHandler();
     virtual void processArguments(QStringList const& args) = 0;
 
     virtual QString translationsDir() const;

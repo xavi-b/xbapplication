@@ -25,6 +25,19 @@ bool Application::sendToUniqueInstance(QLocalSocket& localSocket)
     return localSocket.waitForBytesWritten(this->connectionTimeout);
 }
 
+void Application::readyReadHandler()
+{
+    QLocalSocket* localSocket = qobject_cast<QLocalSocket*>(this->sender());
+    if(localSocket)
+    {
+        QStringList arguments;
+        QByteArray data = localSocket->readAll();
+        QDataStream ds(data);
+        ds >> arguments;
+        this->processArguments(arguments);
+    }
+}
+
 Application::Application(QString const& applicationName,
                          QString const& organizationDomain,
                          QString const& organizationName,
@@ -58,19 +71,6 @@ QString Application::getUniqueApplicationName() const
             .arg(this->applicationName())
             .arg(this->organizationDomain())
             .arg(this->organizationName());
-}
-
-void Application::readyReadHandler()
-{
-    QLocalSocket* localSocket = qobject_cast<QLocalSocket*>(this->sender());
-    if(localSocket)
-    {
-        QStringList arguments;
-        QByteArray data = localSocket->readAll();
-        QDataStream ds(data);
-        ds >> arguments;
-        this->processArguments(arguments);
-    }
 }
 
 QString Application::translationsDir() const
