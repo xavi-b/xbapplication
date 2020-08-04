@@ -26,7 +26,7 @@ private:
     void updateDownloadedHandler(QNetworkReply* reply);
 
 protected:
-    virtual bool shouldUpdate(QUrl const& updateUrl) = 0;
+    virtual bool shouldUpdate(QUrl const& updateUrl) const = 0;
     virtual void update(QUrl const& updateUrl);
     virtual bool applyUpdate(QByteArray const& data);
 
@@ -35,6 +35,8 @@ public:
                          QString const& organizationDomain,
                          QString const& organizationName,
                          int argc, char *argv[]);
+
+    virtual void processArguments(QStringList const& args) = 0;
 
     bool doCheckForUpdates();
     void setCheckForUpdates(bool b) { this->checkForUpdates = b; }
