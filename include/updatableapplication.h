@@ -34,7 +34,7 @@ public:
     UpdatableApplication(QString const& applicationName,
                          QString const& organizationDomain,
                          QString const& organizationName,
-                         int argc, char *argv[]);
+                         int& argc, char *argv[]);
 
     virtual void processArguments(QStringList const& args) = 0;
 

@@ -41,7 +41,7 @@ void Application::readyReadHandler()
 Application::Application(QString const& applicationName,
                          QString const& organizationDomain,
                          QString const& organizationName,
-                         int argc, char *argv[])
+                         int& argc, char *argv[])
     : QApplication(argc, argv)
 {
     this->setApplicationName(applicationName);

@@ -32,7 +32,7 @@ public:
     Application(QString const& applicationName,
                 QString const& organizationDomain,
                 QString const& organizationName,
-                int argc, char *argv[]);
+                int& argc, char *argv[]);
 
     bool checkUniqueInstance();
     QString getUniqueApplicationName() const;
