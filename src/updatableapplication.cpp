@@ -5,7 +5,7 @@ namespace XB
 
 void UpdatableApplication::updateDownloadedHandler(QNetworkReply* reply)
 {
-    emit updateDownloaded(reply->readAll());
+    this->applyUpdate(reply->readAll());
     reply->deleteLater();
 }
 
@@ -19,7 +19,8 @@ void UpdatableApplication::update(QUrl const& updateUrl)
 
 bool UpdatableApplication::applyUpdate(QByteArray const& data)
 {
-    QFile updater(QStandardPaths::writableLocation(QStandardPaths::StandardLocation::TempLocation));
+    QDir dir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::TempLocation);
+    QFile updater(dir.filePath("updater"));
     if(updater.open(QIODevice::ReadWrite))
     {
         updater.write(data);
@@ -46,10 +47,13 @@ UpdatableApplication::UpdatableApplication(QString const& applicationName,
 
 }
 
-bool UpdatableApplication::doCheckForUpdates()
+bool UpdatableApplication::checkForUpdates()
 {
-    if(this->checkForUpdates && this->shouldUpdate(this->updateUrl))
+    if(this->shouldCheckForUpdates && this->shouldUpdate(this->updateUrl))
+    {
         this->update(this->updateUrl);
+        return true;
+    }
 
     return false;
 }

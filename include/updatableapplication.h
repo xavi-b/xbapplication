@@ -18,7 +18,7 @@ class UpdatableApplication: public Application
     Q_OBJECT
 
 private:
-    bool checkForUpdates = true;
+    bool shouldCheckForUpdates = true;
     QUrl updateUrl;
     QNetworkAccessManager downloadManager;
     int transferTimeout = 30000;
@@ -38,14 +38,11 @@ public:
 
     virtual void processArguments(QStringList const& args) = 0;
 
-    bool doCheckForUpdates();
-    void setCheckForUpdates(bool b) { this->checkForUpdates = b; }
+    bool checkForUpdates();
+    void setCheckForUpdates(bool b) { this->shouldCheckForUpdates = b; }
     void setUpdateUrl(QUrl const& url) { this->updateUrl = url; }
     void setTransferTimeout(int i) { this->transferTimeout = i; }
     int getTransferTimeout() const { return this->transferTimeout; }
-
-signals:
-    void updateDownloaded(QByteArray const& data);
 };
 
 }
