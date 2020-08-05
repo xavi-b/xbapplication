@@ -8,6 +8,7 @@
 #include <QNetworkReply>
 #include <QStandardPaths>
 #include <QProcess>
+#include <QFile>
 #include "application.h"
 
 namespace XB
