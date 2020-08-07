@@ -17,25 +17,6 @@ void UpdatableApplication::update(QUrl const& updateUrl)
     this->downloadManager.get(request);
 }
 
-bool UpdatableApplication::applyUpdate(QByteArray const& data)
-{
-    QDir dir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::TempLocation);
-    QFile updater(dir.filePath("updater"));
-    if(updater.open(QIODevice::ReadWrite))
-    {
-        updater.write(data);
-        updater.close();
-        this->quit();
-        QStringList args = this->arguments();
-        args[0] = QCoreApplication::applicationFilePath();
-        updater.setPermissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ExeOwner);
-        QProcess::startDetached(QFileInfo(updater).filePath(), args);
-        return true;
-    }
-
-    return false;
-}
-
 UpdatableApplication::UpdatableApplication(QString const& applicationName,
                                            QString const& organizationDomain,
                                            QString const& organizationName,

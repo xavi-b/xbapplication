@@ -14,10 +14,9 @@
 namespace XB
 {
 
-class UpdatableApplication: public Application
+class Q_DECL_EXPORT UpdatableApplication: public Application
 {
     Q_OBJECT
-
 private:
     bool shouldCheckForUpdates = true;
     QUrl updateUrl;
@@ -29,7 +28,7 @@ private:
 protected:
     virtual bool shouldUpdate(QUrl const& updateUrl) const = 0;
     virtual void update(QUrl const& updateUrl);
-    virtual bool applyUpdate(QByteArray const& data);
+    virtual bool applyUpdate(QByteArray const& data) = 0;
 
 public:
     UpdatableApplication(QString const& applicationName,

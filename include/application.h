@@ -11,7 +11,7 @@
 namespace XB
 {
 
-class Application : public QApplication
+class Q_DECL_EXPORT Application : public QApplication
 {
     Q_OBJECT
 private:
