@@ -5,6 +5,8 @@ QT             += widgets network
 TARGET          = xbapplication
 DESTDIR         = $$PWD
 
+DEFINES += XBAPPLICATION_LIBRARY
+
 qm_file.files = $$files($$[QT_INSTALL_TRANSLATIONS]/qtbase_*.qm)
 qm_file.base = $$[QT_INSTALL_TRANSLATIONS]
 qm_file.prefix = qt_translations

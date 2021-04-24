@@ -7,11 +7,12 @@
 #include <QDataStream>
 #include <QDir>
 #include <QTranslator>
+#include "export.h"
 
 namespace XB
 {
 
-class Q_DECL_EXPORT Application : public QApplication
+class XBAPPLICATION_EXPORT Application : public QApplication
 {
     Q_OBJECT
 private:

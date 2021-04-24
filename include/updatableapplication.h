@@ -10,11 +10,12 @@
 #include <QProcess>
 #include <QFile>
 #include "application.h"
+#include "export.h"
 
 namespace XB
 {
 
-class Q_DECL_EXPORT UpdatableApplication: public Application
+class XBAPPLICATION_EXPORT UpdatableApplication: public Application
 {
     Q_OBJECT
 private:

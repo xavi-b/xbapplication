@@ -1,1 +1,3 @@
 qmake_qm_file.qrc
+debug/*
+release/*
