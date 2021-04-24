@@ -83,10 +83,17 @@ bool Application::switchLocale(QString const& locale)
     if(this->getAvailableLocales().contains(locale))
     {
         this->removeTranslator(&this->translator);
+        this->removeTranslator(&this->qt_translator);
 
-        QString path = this->translationsDir() + "/" + locale + ".qm";
+        QString path;
+        path = this->translationsDir() + "/" + locale + ".qm";
         if(translator.load(path))
             this->installTranslator(&translator);
+
+        QString shortLocale = locale.split('_').first();
+        path = ":/qt_translations/qtbase_" + shortLocale + ".qm";
+        if(qt_translator.load(path))
+            this->installTranslator(&qt_translator);
 
         this->setCurrentLocale(this->defaultLocale);
 

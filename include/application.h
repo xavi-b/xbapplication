@@ -20,6 +20,7 @@ private:
     QString defaultLocale = "en_US";
     QString currentLocale;
     QTranslator translator;
+    QTranslator qt_translator;
 
     void newConnectionHandler();
 
