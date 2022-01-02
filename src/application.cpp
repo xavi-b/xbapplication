@@ -95,7 +95,7 @@ bool Application::switchLocale(QString const& locale)
         if(qt_translator.load(path))
             this->installTranslator(&qt_translator);
 
-        this->setCurrentLocale(this->defaultLocale);
+        this->setCurrentLocale(locale);
 
         return true;
     }
